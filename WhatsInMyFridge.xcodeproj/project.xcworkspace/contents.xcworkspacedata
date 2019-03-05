@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:../WhatsInMyFridge/Floaty/Floaty.swift">
+   </FileRef>
+   <FileRef
+      location = "group:../WhatsInMyFridge/Floaty/FloatyDelegate.swift">
+   </FileRef>
+   <FileRef
+      location = "group:../WhatsInMyFridge/Floaty/FloatyItem.swift">
+   </FileRef>
+   <FileRef
+      location = "group:../WhatsInMyFridge/Floaty/FloatyManager.swift">
+   </FileRef>
+   <FileRef
+      location = "group:../WhatsInMyFridge/Floaty/FloatyViewController.swift">
+   </FileRef>
+   <FileRef
+      location = "group:../WhatsInMyFridge/Floaty/FloatyWindow.swift">
+   </FileRef>
+   <FileRef
+      location = "self:WhatsInMyFridge.xcodeproj">
+   </FileRef>
+</Workspace>

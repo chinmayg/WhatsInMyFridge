@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="1xY-jj-Rvh">
+    <device id="retina5_9" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Grocery List-->
+        <scene sceneID="xy1-fq-24U">
+            <objects>
+                <viewController title="Grocery List" id="nvX-2R-i16" customClass="GroceryViewController" customModule="WhatsInMyFridge" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="sAR-fr-uB7">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your Grocery List is Empty!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DtY-qS-Pao">
+                                <rect key="frame" x="0.0" y="88" width="375" height="641"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="27"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="klt-wG-IuC" userLabel="GroceryTableView">
+                                <rect key="frame" x="0.0" y="88" width="375" height="641"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="groceryCell" id="7g3-8c-fbu" userLabel="groceryCell" customClass="ItemCell" customModule="WhatsInMyFridge" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="7g3-8c-fbu" id="UaE-is-355">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.666666666666664"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="klt-wG-IuC" firstAttribute="leading" secondItem="dI2-ko-M0V" secondAttribute="leading" id="PDK-65-nn2"/>
+                            <constraint firstItem="klt-wG-IuC" firstAttribute="trailing" secondItem="dI2-ko-M0V" secondAttribute="trailing" id="UIu-pT-y33"/>
+                            <constraint firstItem="klt-wG-IuC" firstAttribute="bottom" secondItem="dI2-ko-M0V" secondAttribute="bottom" id="fTt-Hy-PJl"/>
+                            <constraint firstItem="DtY-qS-Pao" firstAttribute="leading" secondItem="dI2-ko-M0V" secondAttribute="leading" id="guu-O9-xp0"/>
+                            <constraint firstItem="DtY-qS-Pao" firstAttribute="top" secondItem="dI2-ko-M0V" secondAttribute="top" id="i4J-XN-k8c"/>
+                            <constraint firstItem="klt-wG-IuC" firstAttribute="top" secondItem="dI2-ko-M0V" secondAttribute="top" id="keD-XH-8gb"/>
+                            <constraint firstItem="dI2-ko-M0V" firstAttribute="trailing" secondItem="DtY-qS-Pao" secondAttribute="trailing" id="tkw-Kz-8BS"/>
+                            <constraint firstItem="dI2-ko-M0V" firstAttribute="bottom" secondItem="DtY-qS-Pao" secondAttribute="bottom" id="wCn-4f-RlQ"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="dI2-ko-M0V"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Grocery List" id="ggC-S5-uO8">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="ZJB-Cv-CwY">
+                            <connections>
+                                <action selector="addItemButton:" destination="nvX-2R-i16" id="8yF-we-757"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="groceryTableView" destination="klt-wG-IuC" id="Tab-dN-5a9"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="j3K-g0-Ia6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3319.1999999999998" y="663.41829085457277"/>
+        </scene>
+        <!--Settings-->
+        <scene sceneID="Ejz-TC-Nvg">
+            <objects>
+                <viewController title="Settings" id="ARs-Jm-sfs" customClass="SettingsViewController" customModule="WhatsInMyFridge" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="68y-WD-QRV">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="2ZH-9u-EYr" userLabel="SettingsTableView">
+                                <rect key="frame" x="0.0" y="88" width="375" height="641"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="settingCell" id="4kW-9j-tpZ">
+                                        <rect key="frame" x="0.0" y="55.333333333333343" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="4kW-9j-tpZ" id="KeD-K4-Tte">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="2ZH-9u-EYr" firstAttribute="trailing" secondItem="66I-2f-cuC" secondAttribute="trailing" id="1Yo-yc-gtg"/>
+                            <constraint firstItem="2ZH-9u-EYr" firstAttribute="leading" secondItem="66I-2f-cuC" secondAttribute="leading" id="cwX-48-xvW"/>
+                            <constraint firstItem="2ZH-9u-EYr" firstAttribute="top" secondItem="66I-2f-cuC" secondAttribute="top" id="iZs-vO-jqe"/>
+                            <constraint firstItem="2ZH-9u-EYr" firstAttribute="bottom" secondItem="66I-2f-cuC" secondAttribute="bottom" id="yHy-l6-SHi"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="66I-2f-cuC"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Settings" id="uMu-85-9kd"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="settingsTableView" destination="2ZH-9u-EYr" id="rbM-gL-mSk"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kQz-Hy-ucB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1648.8" y="1253.5232383808097"/>
+        </scene>
+        <!--Your Fridge-->
+        <scene sceneID="xZe-G7-vIm">
+            <objects>
+                <viewController title="Your Fridge" id="YY4-rO-Q03" customClass="FridgeViewController" customModule="WhatsInMyFridge" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ym1-Iw-IFq">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your Fridge is Empty!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UQa-hZ-r3f">
+                                <rect key="frame" x="0.0" y="88" width="375" height="641"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="27"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="tBF-su-sqs" userLabel="FridgeTableView">
+                                <rect key="frame" x="0.0" y="88" width="375" height="641"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <inset key="separatorInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="fridgeCell" id="8Mj-jW-15h" customClass="ItemCell" customModule="WhatsInMyFridge" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="8Mj-jW-15h" id="Ntl-eW-ILi">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.666666666666664"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="tBF-su-sqs" firstAttribute="trailing" secondItem="hqc-9c-5v0" secondAttribute="trailing" id="Gtj-Kq-Axt"/>
+                            <constraint firstItem="UQa-hZ-r3f" firstAttribute="top" secondItem="hqc-9c-5v0" secondAttribute="top" id="HoO-ji-grC"/>
+                            <constraint firstItem="UQa-hZ-r3f" firstAttribute="leading" secondItem="hqc-9c-5v0" secondAttribute="leading" id="QkH-jx-x6D"/>
+                            <constraint firstItem="tBF-su-sqs" firstAttribute="bottom" secondItem="hqc-9c-5v0" secondAttribute="bottom" id="cRT-B9-42t"/>
+                            <constraint firstAttribute="trailing" secondItem="UQa-hZ-r3f" secondAttribute="trailing" id="eO5-q4-59r"/>
+                            <constraint firstItem="tBF-su-sqs" firstAttribute="top" secondItem="hqc-9c-5v0" secondAttribute="top" id="gm9-wD-tcw"/>
+                            <constraint firstItem="hqc-9c-5v0" firstAttribute="bottom" secondItem="UQa-hZ-r3f" secondAttribute="bottom" id="ix4-3w-bnF"/>
+                            <constraint firstItem="tBF-su-sqs" firstAttribute="leading" secondItem="hqc-9c-5v0" secondAttribute="leading" id="teu-bk-Wxm"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="hqc-9c-5v0"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Your Fridge" id="Vj5-KQ-1AY">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="0Ny-CN-YRv">
+                            <connections>
+                                <action selector="addItemButton:" destination="YY4-rO-Q03" id="MfK-cu-uti"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="emptyMsgLabel" destination="UQa-hZ-r3f" id="1vM-Sk-KnZ"/>
+                        <outlet property="fridgeTableView" destination="tBF-su-sqs" id="HEc-zn-FXt"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Yx1-7P-Eot" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2380" y="-53.201970443349758"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="4Bd-XK-mDq">
+            <objects>
+                <tabBarController id="1xY-jj-Rvh" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="tAK-iU-Ook">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="7um-vI-YBc" kind="relationship" relationship="viewControllers" id="j3m-gB-SMC"/>
+                        <segue destination="Xgf-hw-XvO" kind="relationship" relationship="viewControllers" id="tnP-LT-MxZ"/>
+                        <segue destination="aSY-cD-i6u" kind="relationship" relationship="viewControllers" id="7Gp-nx-tMn"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="peN-sc-IAS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-327" y="290"/>
+        </scene>
+        <!--FridgeNavBar-->
+        <scene sceneID="O9K-zg-7d5">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="7um-vI-YBc" userLabel="FridgeNavBar" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="" image="groceries" landscapeImage="groceries" id="u0F-VT-M7h" userLabel="Fridge"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="evN-WV-AN6">
+                        <rect key="frame" x="0.0" y="44" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="YY4-rO-Q03" kind="relationship" relationship="rootViewController" id="y4h-l1-3QH"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dF8-Or-taN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1440.8" y="-52.623688155922046"/>
+        </scene>
+        <!--GroceryNavBAr-->
+        <scene sceneID="iVe-eW-ae1">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Xgf-hw-XvO" userLabel="GroceryNavBAr" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="" image="cart" landscapeImage="cart" id="hwy-CX-XQG" userLabel="Grocery"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="G7C-C7-Bv4">
+                        <rect key="frame" x="0.0" y="44" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="nvX-2R-i16" kind="relationship" relationship="rootViewController" id="GRp-GW-zKc"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TPG-VL-PTL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2380" y="663.41829085457277"/>
+        </scene>
+        <!--SettingsNavBar-->
+        <scene sceneID="Bal-Kx-Pqa">
+            <objects>
+                <navigationController title="Settings" automaticallyAdjustsScrollViewInsets="NO" id="aSY-cD-i6u" userLabel="SettingsNavBar" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="" image="settings_btn" landscapeImage="settings_btn" id="PvA-jQ-LRB" userLabel="Settings"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="wxv-d6-CQp">
+                        <rect key="frame" x="0.0" y="44" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="ARs-Jm-sfs" kind="relationship" relationship="rootViewController" id="g7u-iv-DQu"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1qv-ap-bkt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="709.60000000000002" y="1253.5232383808097"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="cart" width="24" height="20"/>
+        <image name="groceries" width="22" height="21"/>
+        <image name="settings_btn" width="17" height="17"/>
+    </resources>
+</document>
