@@ -88,29 +88,26 @@ class FridgeViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let alertController = UIAlertController(title: "", message: "Do you want to move this item to Grocery List or remove it?", preferredStyle: .alert)
+        let selectedAction = UserDefaults.standard.integer(forKey: "Fridge")
         
-        alertController.addAction(UIAlertAction(title: "Move to Grocery List", style: .destructive, handler: { (_) in
-            let entity = NSEntityDescription.entity(forEntityName: "Grocery", in: self.managedContext)!
-            let food_fridge = self.foodList[indexPath.row]
-            let food_grocery = NSManagedObject(entity: entity, insertInto: self.managedContext)
-            food_grocery.setValue(food_fridge.value(forKeyPath: "name"), forKeyPath: "name")
-            food_grocery.setValue(food_fridge.value(forKeyPath: "quantity"), forKeyPath: "quantity")
+        if selectedAction == ListAction.move.rawValue {
+            moveItemToOtherList(indexPath: indexPath)
+        } else if selectedAction == ListAction.delete.rawValue {
+            deleteItemFromList(indexPath: indexPath)
+        } else {
+            let alertController = UIAlertController(title: "", message: "Do you want to move this item to Grocery List or remove it?", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "Move to Grocery List", style: .destructive, handler: { (_) in
+                self.moveItemToOtherList(indexPath: indexPath)
+            }))
             
-            self.managedContext.delete(self.foodList[indexPath.row])
-            self.foodList.remove(at: indexPath.row)
-            self.save()
-        }))
-        
-        alertController.addAction(UIAlertAction(title: "Remove from List", style: .destructive, handler: { (_) in
-            self.managedContext.delete(self.foodList[indexPath.row])
-            self.foodList.remove(at: indexPath.row)
-            self.save()
-        }))
-        
-        alertController.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
-        
-        present(alertController, animated: true, completion: nil)
+            alertController.addAction(UIAlertAction(title: "Remove from List", style: .destructive, handler: { (_) in
+                self.deleteItemFromList(indexPath: indexPath)
+            }))
+            
+            alertController.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
+            
+            present(alertController, animated: true, completion: nil)
+            }
     }
     
     func hideTableView() {
@@ -146,10 +143,8 @@ class FridgeViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func load() {
-        //2
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Fridge")
         
-        //3
         do {
             foodList = try managedContext.fetch(fetchRequest)
         } catch let error as NSError {
@@ -157,5 +152,22 @@ class FridgeViewController: UIViewController, UITableViewDataSource, UITableView
         }
     }
 
+    func moveItemToOtherList(indexPath: IndexPath) {
+        let entity = NSEntityDescription.entity(forEntityName: "Grocery", in: self.managedContext)!
+        let food_fridge = self.foodList[indexPath.row]
+        let food_grocery = NSManagedObject(entity: entity, insertInto: self.managedContext)
+        food_grocery.setValue(food_fridge.value(forKeyPath: "name"), forKeyPath: "name")
+        food_grocery.setValue(food_fridge.value(forKeyPath: "quantity"), forKeyPath: "quantity")
+        
+        managedContext.delete(self.foodList[indexPath.row])
+        foodList.remove(at: indexPath.row)
+        save()
+    }
+    
+    func deleteItemFromList(indexPath: IndexPath) {
+        managedContext.delete(foodList[indexPath.row])
+        foodList.remove(at: indexPath.row)
+        save()
+    }
 }
 

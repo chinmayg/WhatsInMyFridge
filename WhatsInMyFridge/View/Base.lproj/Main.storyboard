@@ -191,7 +191,7 @@
         <scene sceneID="O9K-zg-7d5">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="7um-vI-YBc" userLabel="FridgeNavBar" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="groceries" landscapeImage="groceries" id="u0F-VT-M7h" userLabel="Fridge"/>
+                    <tabBarItem key="tabBarItem" title="Your Fridge" image="groceries" landscapeImage="groceries" id="u0F-VT-M7h" userLabel="Fridge"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="evN-WV-AN6">
                         <rect key="frame" x="0.0" y="44" width="375" height="44"/>
@@ -210,7 +210,7 @@
         <scene sceneID="iVe-eW-ae1">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Xgf-hw-XvO" userLabel="GroceryNavBAr" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="cart" landscapeImage="cart" id="hwy-CX-XQG" userLabel="Grocery"/>
+                    <tabBarItem key="tabBarItem" title=" Grocery List" image="cart" landscapeImage="cart" id="hwy-CX-XQG" userLabel="Grocery"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="G7C-C7-Bv4">
                         <rect key="frame" x="0.0" y="44" width="375" height="44"/>
@@ -229,7 +229,7 @@
         <scene sceneID="Bal-Kx-Pqa">
             <objects>
                 <navigationController title="Settings" automaticallyAdjustsScrollViewInsets="NO" id="aSY-cD-i6u" userLabel="SettingsNavBar" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="settings_btn" landscapeImage="settings_btn" id="PvA-jQ-LRB" userLabel="Settings"/>
+                    <tabBarItem key="tabBarItem" title="Settings" image="settings_btn" landscapeImage="settings_btn" id="PvA-jQ-LRB" userLabel="Settings"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="wxv-d6-CQp">
                         <rect key="frame" x="0.0" y="44" width="375" height="44"/>

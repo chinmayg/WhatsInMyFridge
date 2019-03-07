@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		744236DA222E66AD00303E45 /* ListDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 744236D8222E66AD00303E45 /* ListDataModel.xcdatamodeld */; };
+		744236DC222F623000303E45 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 744236DB222F623000303E45 /* Constants.swift */; };
 		744B4BB9220ABA7F003D67AC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 744B4BB8220ABA7F003D67AC /* AppDelegate.swift */; };
 		744B4BBB220ABA7F003D67AC /* FridgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 744B4BBA220ABA7F003D67AC /* FridgeViewController.swift */; };
 		744B4BBE220ABA7F003D67AC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 744B4BBC220ABA7F003D67AC /* Main.storyboard */; };
@@ -21,6 +22,7 @@
 
 /* Begin PBXFileReference section */
 		744236D9222E66AD00303E45 /* ListDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ListDataModel.xcdatamodel; sourceTree = "<group>"; };
+		744236DB222F623000303E45 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = WhatsInMyFridge/Constants.swift; sourceTree = SOURCE_ROOT; };
 		744B4BB5220ABA7F003D67AC /* WhatsInMyFridge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhatsInMyFridge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		744B4BB8220ABA7F003D67AC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		744B4BBA220ABA7F003D67AC /* FridgeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FridgeViewController.swift; sourceTree = "<group>"; };
@@ -65,6 +67,7 @@
 			isa = PBXGroup;
 			children = (
 				744B4BB8220ABA7F003D67AC /* AppDelegate.swift */,
+				744236DB222F623000303E45 /* Constants.swift */,
 				74E7FB2C222787CB0087EBD5 /* Controllers */,
 				74E7FB2E222787F70087EBD5 /* View */,
 				74E7FB2D222787D30087EBD5 /* Model */,
@@ -179,6 +182,7 @@
 				74E30BA5220AC504000B0E1D /* SettingsViewController.swift in Sources */,
 				74E7FB3522278FBC0087EBD5 /* ItemTVCell.swift in Sources */,
 				744236DA222E66AD00303E45 /* ListDataModel.xcdatamodeld in Sources */,
+				744236DC222F623000303E45 /* Constants.swift in Sources */,
 				744B4BBB220ABA7F003D67AC /* FridgeViewController.swift in Sources */,
 				744B4BB9220ABA7F003D67AC /* AppDelegate.swift in Sources */,
 			);
