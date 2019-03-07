@@ -23,8 +23,6 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         UserDefaults.standard.register(defaults: ["Fridge" : ListAction.none.rawValue,
                                                   "Grocery" : ListAction.none.rawValue])
         
-//        UserDefaults.standard.set(ListAction.none.rawValue,forKey: "Fridge")
-//        UserDefaults.standard.set(ListAction.none.rawValue,forKey: "Grocery")
         // Do any additional setup after loading the view.
     }
     
