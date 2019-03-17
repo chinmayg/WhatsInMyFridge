@@ -19,10 +19,6 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         super.viewDidLoad()
         settingsTableView.dataSource = self
         settingsTableView.delegate = self
-        
-        UserDefaults.standard.register(defaults: ["Fridge" : ListAction.none.rawValue,
-                                                  "Grocery" : ListAction.none.rawValue])
-        
         // Do any additional setup after loading the view.
     }
     

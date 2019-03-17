@@ -25,7 +25,7 @@
                             <constraint firstAttribute="width" constant="202" id="hKR-A7-5k5"/>
                         </constraints>
                         <nil key="textColor"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
                         <textInputTraits key="textInputTraits"/>
                     </textField>
                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1ae-5J-dF9">
@@ -34,8 +34,8 @@
                             <constraint firstAttribute="width" constant="29" id="Iwt-iy-jWu"/>
                         </constraints>
                         <nil key="textColor"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                        <textInputTraits key="textInputTraits"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                        <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                     </textField>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="# in Fridge" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mDA-Ao-fT5">
                         <rect key="frame" x="217" y="17" width="47.5" height="11"/>
@@ -51,6 +51,7 @@
                 <constraints>
                     <constraint firstItem="0fJ-KO-met" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="6" id="MHd-ne-Gsw"/>
                     <constraint firstItem="mDA-Ao-fT5" firstAttribute="leading" secondItem="0fJ-KO-met" secondAttribute="trailing" constant="8" id="NNz-2T-UR8"/>
+                    <constraint firstAttribute="trailing" secondItem="1ae-5J-dF9" secondAttribute="trailing" constant="16" id="NuF-6X-PiB"/>
                     <constraint firstItem="0fJ-KO-met" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="7" id="dRg-hD-QiI"/>
                     <constraint firstItem="mDA-Ao-fT5" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="6" id="dXo-Ba-lEc"/>
                     <constraint firstItem="1ae-5J-dF9" firstAttribute="leading" secondItem="mDA-Ao-fT5" secondAttribute="trailing" constant="10.5" id="hjw-Bb-w26"/>

@@ -24,6 +24,9 @@ class FridgeViewController: UIViewController, UITableViewDataSource, UITableView
         
         // Used to register the custom .xib file
         fridgeTableView.register(UINib(nibName: "ItemTVCell", bundle: nil), forCellReuseIdentifier: "fridgeCell")
+        UserDefaults.standard.register(defaults: ["Fridge" : ListAction.none.rawValue,
+                                                  "Grocery" : ListAction.none.rawValue])
+        
     }
     
     @IBAction func addItemButton(_ sender: Any) {
@@ -42,7 +45,11 @@ class FridgeViewController: UIViewController, UITableViewDataSource, UITableView
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (_) in
             if let name = alert.textFields?[0].text,let quantity = alert.textFields?[1].text
             {
-                self.addNewFoodItem(name: name, quantity: Int(quantity)!)
+                if let number = Int(quantity) {
+                    self.addNewFoodItem(name: name, quantity: number)
+                } else {
+                    self.addNewFoodItem(name: name, quantity: 0)
+                }
             }
         }))
         

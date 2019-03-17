@@ -44,7 +44,11 @@ class GroceryViewController: UIViewController, UITableViewDelegate, UITableViewD
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (_) in
             if let name = alert.textFields?[0].text,let quantity = alert.textFields?[1].text
             {
-                self.addNewToDoItem(name: name, quantity: Int(quantity)!)
+                if let number = Int(quantity) {
+                    self.addNewFoodItem(name: name, quantity: number)
+                } else {
+                    self.addNewFoodItem(name: name, quantity: 0)
+                }
             }
         }))
         
@@ -52,7 +56,7 @@ class GroceryViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.present(alert, animated: true, completion: nil)
     }
     
-    private func addNewToDoItem(name: String, quantity: Int)
+    private func addNewFoodItem(name: String, quantity: Int)
     {
         // Create new item and add it to the todo items list
         //data.append(Item(name: name, quanity: quantity, dateAdded: "02/28/2019"))
@@ -87,7 +91,7 @@ class GroceryViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         cell.itemName.text = food.value(forKeyPath: "name") as? String
         cell.itemQuantity.text = "\(food.value(forKeyPath: "quantity") as? Int ?? 0)"
-        cell.cellLabel.text = "# needed from Grocery"
+        cell.cellLabel.text = "# needed"
 
         return cell
     }
