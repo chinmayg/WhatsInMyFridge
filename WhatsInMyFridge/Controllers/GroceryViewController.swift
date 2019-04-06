@@ -10,9 +10,10 @@ import UIKit
 import CoreData
 
 
-class GroceryViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class GroceryViewController: UIViewController {
 
     @IBOutlet weak var groceryTableView: UITableView!
+    @IBOutlet weak var searchBar: UISearchBar!
     
     private var foodList: [NSManagedObject] = []
     let managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -25,7 +26,7 @@ class GroceryViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         groceryTableView.register(UINib(nibName: "ItemTVCell", bundle: nil), forCellReuseIdentifier: "groceryCell")
         
-        load()
+        getOrginalListAlphabetical()
     }
     
     @IBAction func addItemButton(_ sender: Any) {
@@ -59,23 +60,98 @@ class GroceryViewController: UIViewController, UITableViewDelegate, UITableViewD
     private func addNewFoodItem(name: String, quantity: Int)
     {
         // Create new item and add it to the todo items list
-        //data.append(Item(name: name, quanity: quantity, dateAdded: "02/28/2019"))
-
-        let entity = NSEntityDescription.entity(forEntityName: "Grocery", in: managedContext)!
+        let entity = NSEntityDescription.entity(forEntityName: "Item", in: managedContext)!
         
         let food = NSManagedObject(entity: entity, insertInto: managedContext)
-        // 3
+
         food.setValue(name, forKeyPath: "name")
         food.setValue(quantity, forKeyPath: "quantity")
+        food.setValue("Grocery", forKey: "currentList")
         foodList.append(food)
-
+        
+        hideTableView()
+        
         save()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        getOrginalListAlphabetical()
+    }
+    
+    func hideTableView() {
+        if foodList.isEmpty {
+            self.groceryTableView.isHidden = true
+        }
+        else {
+            self.groceryTableView.isHidden = false
+        }
+    }
+    
+    func save() {
+        do {
+            try managedContext.save()
+        } catch let error as NSError {
+            print("Could not save. \(error), \(error.userInfo)")
+        }
         
         hideTableView()
         
         groceryTableView.reloadData()
     }
     
+    func load(with request : NSFetchRequest<Item> = Item.fetchRequest()) {
+        hideTableView()
+        
+        do {
+            foodList = try managedContext.fetch(request)
+            
+            // Remove fridge items from list
+            
+            for (index,food) in foodList.enumerated() {
+                if (food.value(forKey: "currentList") as? String ?? "") == "Fridge" {
+                    foodList.remove(at: index)
+                }
+            }
+        } catch let error as NSError {
+            print("Could not fetch. \(error), \(error.userInfo)")
+        }
+        
+        hideTableView()
+        
+        groceryTableView.reloadData()
+
+    }
+    
+    func getOrginalListAlphabetical() {
+        let request : NSFetchRequest<Item> = Item.fetchRequest()
+        request.sortDescriptors  = [NSSortDescriptor(key: "name", ascending: true )]
+        
+        load(with: request)
+    }
+        
+    func moveItemToOtherList(indexPath: IndexPath) {
+        let entity = NSEntityDescription.entity(forEntityName: "Item", in: self.managedContext)!
+        let food_fridge = self.foodList[indexPath.row]
+        let food_grocery = NSManagedObject(entity: entity, insertInto: self.managedContext)
+        food_grocery.setValue(food_fridge.value(forKeyPath: "name"), forKeyPath: "name")
+        food_grocery.setValue(food_fridge.value(forKeyPath: "quantity"), forKeyPath: "quantity")
+        
+        
+        managedContext.delete(self.foodList[indexPath.row])
+        foodList.remove(at: indexPath.row)
+        save()
+    }
+    
+    func deleteItemFromList(indexPath: IndexPath) {
+        managedContext.delete(foodList[indexPath.row])
+        foodList.remove(at: indexPath.row)
+        save()
+    }
+}
+
+//MARK: - TableView Delegate Methods
+
+extension GroceryViewController:  UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -83,6 +159,11 @@ class GroceryViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return foodList.count
     }
+}
+
+//MARK: TableView Data Source Methods
+
+extension GroceryViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
@@ -92,7 +173,7 @@ class GroceryViewController: UIViewController, UITableViewDelegate, UITableViewD
         cell.itemName.text = food.value(forKeyPath: "name") as? String
         cell.itemQuantity.text = "\(food.value(forKeyPath: "quantity") as? Int ?? 0)"
         cell.cellLabel.text = "# needed"
-
+        
         return cell
     }
     
@@ -121,61 +202,27 @@ class GroceryViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        load()
-        groceryTableView.reloadData()
+}
+
+//MARK: - Search Bar Methods
+
+extension GroceryViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        let request : NSFetchRequest<Item> = Item.fetchRequest()
+
+        request.predicate = NSPredicate(format: "name CONTAINS[cd] %@ ", searchBar.text!)
+        request.sortDescriptors  = [NSSortDescriptor(key: "name", ascending: true )]
+        
+        load(with: request)
     }
     
-    func hideTableView() {
-        if foodList.isEmpty {
-            self.groceryTableView.isHidden = true
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text?.count == 0 {
+            getOrginalListAlphabetical()
+            
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()
+            }
         }
-        else {
-            self.groceryTableView.isHidden = false
-        }
-    }
-    
-    func save() {
-        do {
-            try managedContext.save()
-        } catch let error as NSError {
-            print("Could not save. \(error), \(error.userInfo)")
-        }
-        
-        hideTableView()
-        
-        groceryTableView.reloadData()
-    }
-    
-    func load() {
-        hideTableView()
-        
-        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Grocery")
-        
-        do {
-            foodList = try managedContext.fetch(fetchRequest)
-        } catch let error as NSError {
-            print("Could not fetch. \(error), \(error.userInfo)")
-        }
-        
-        hideTableView()
-    }
-        
-    func moveItemToOtherList(indexPath: IndexPath) {
-        let entity = NSEntityDescription.entity(forEntityName: "Fridge", in: self.managedContext)!
-        let food_fridge = self.foodList[indexPath.row]
-        let food_grocery = NSManagedObject(entity: entity, insertInto: self.managedContext)
-        food_grocery.setValue(food_fridge.value(forKeyPath: "name"), forKeyPath: "name")
-        food_grocery.setValue(food_fridge.value(forKeyPath: "quantity"), forKeyPath: "quantity")
-        
-        managedContext.delete(self.foodList[indexPath.row])
-        foodList.remove(at: indexPath.row)
-        save()
-    }
-    
-    func deleteItemFromList(indexPath: IndexPath) {
-        managedContext.delete(foodList[indexPath.row])
-        foodList.remove(at: indexPath.row)
-        save()
     }
 }

@@ -30,6 +30,7 @@
 		744B4BBF220ABA80003D67AC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		744B4BC2220ABA80003D67AC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		744B4BC4220ABA80003D67AC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		74692B512256EDD90089D023 /* ListDataModelv2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ListDataModelv2.xcdatamodel; sourceTree = "<group>"; };
 		74E30BA2220AC4F7000B0E1D /* GroceryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroceryViewController.swift; sourceTree = "<group>"; };
 		74E30BA4220AC504000B0E1D /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		74E7FB3322278FBC0087EBD5 /* ItemTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTVCell.swift; sourceTree = "<group>"; };
@@ -138,6 +139,7 @@
 				TargetAttributes = {
 					744B4BB4220ABA7F003D67AC = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
 					};
 				};
 			};
@@ -339,7 +341,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.ghotkar.WhatsInMyFridge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -357,7 +359,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.ghotkar.WhatsInMyFridge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
@@ -389,9 +391,10 @@
 		744236D8222E66AD00303E45 /* ListDataModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				74692B512256EDD90089D023 /* ListDataModelv2.xcdatamodel */,
 				744236D9222E66AD00303E45 /* ListDataModel.xcdatamodel */,
 			);
-			currentVersion = 744236D9222E66AD00303E45 /* ListDataModel.xcdatamodel */;
+			currentVersion = 74692B512256EDD90089D023 /* ListDataModelv2.xcdatamodel */;
 			path = ListDataModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

@@ -62,12 +62,13 @@ class FridgeViewController: UIViewController, UITableViewDataSource, UITableView
         // Create new item and add it to the todo items list
         //data.append(Item(name: name, quanity: quantity, dateAdded: "02/28/2019"))
         
-        let entity = NSEntityDescription.entity(forEntityName: "Fridge", in: managedContext)!
+        let entity = NSEntityDescription.entity(forEntityName: "Item", in: managedContext)!
         
         let food = NSManagedObject(entity: entity, insertInto: managedContext)
         // 3
         food.setValue(name, forKeyPath: "name")
         food.setValue(quantity, forKeyPath: "quantity")
+        food.setValue("Fridge", forKeyPath: "currentList")
         foodList.append(food)
 
         // 4
@@ -150,17 +151,27 @@ class FridgeViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func load() {
-        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Fridge")
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Item")
         
         do {
             foodList = try managedContext.fetch(fetchRequest)
+            // Remove Grocery items from list
+            
+            for (index,food) in foodList.enumerated().reversed() {
+                if (food.value(forKey: "currentList") as? String ?? "") == "Grocery" {
+                    print("List Count:", foodList.count)
+                    print("Index:",index);
+                    print("item:", foodList[index])
+                    foodList.remove(at: index)
+                }
+            }
         } catch let error as NSError {
             print("Could not fetch. \(error), \(error.userInfo)")
         }
     }
 
     func moveItemToOtherList(indexPath: IndexPath) {
-        let entity = NSEntityDescription.entity(forEntityName: "Grocery", in: self.managedContext)!
+        let entity = NSEntityDescription.entity(forEntityName: "Item", in: self.managedContext)!
         let food_fridge = self.foodList[indexPath.row]
         let food_grocery = NSManagedObject(entity: entity, insertInto: self.managedContext)
         food_grocery.setValue(food_fridge.value(forKeyPath: "name"), forKeyPath: "name")
