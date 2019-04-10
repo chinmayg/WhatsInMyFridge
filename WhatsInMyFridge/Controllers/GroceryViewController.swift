@@ -37,10 +37,12 @@ class GroceryViewController: UIViewController {
         
         // Add a text field to the alert for the new item's name
         alert.addTextField(configurationHandler: nil)
-        
+        alert.textFields?[0].placeholder = "Food item Name"
+
         // Add a text field to the alert for the new item's quantity
         alert.addTextField(configurationHandler: nil)
-        
+        alert.textFields?[1].placeholder = "How much of the item"
+
         // Add a "cancel" button to the alert. This one doesn't need a handler
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
@@ -74,6 +76,21 @@ class GroceryViewController: UIViewController {
         
         hideTableView()
         
+        save()
+    }
+    
+    @objc func textFieldDidChange(_ textField: TableViewTextField) {
+        print("textFieldChanged", textField.text!)
+        print("index row", textField.indexRow)
+        let food = foodList[textField.indexRow]
+        
+        if Int(textField.text!) == nil {
+            food.setValue(textField.text!, forKeyPath: "name")
+        } else {
+            food.setValue(Int(textField.text!), forKeyPath: "quantity")
+        }
+        
+        // 4
         save()
     }
 
@@ -180,10 +197,17 @@ extension GroceryViewController: UITableViewDataSource {
         let cell = groceryTableView.dequeueReusableCell(withIdentifier: "groceryCell") as! ItemTVCell
         let food = foodList[indexPath.row]
         
+        cell.itemName.adjustsFontSizeToFitWidth = true
         cell.itemName.text = food.value(forKeyPath: "name") as? String
-        cell.itemQuantity.text = "\(food.value(forKeyPath: "quantity") as? Int ?? 0)"
-        cell.cellLabel.text = "# needed"
+        cell.itemName.indexRow = indexPath.row
+        cell.itemName.addTarget(self, action: #selector(textFieldDidChange), for: .editingDidEnd)
         
+        
+        cell.itemQuantity.adjustsFontSizeToFitWidth = true
+        cell.itemQuantity.addTarget(self, action: #selector(textFieldDidChange), for: .editingDidEnd)
+        cell.itemQuantity.text = "\(food.value(forKeyPath: "quantity") as? Int ?? 0)"
+        cell.itemQuantity.indexRow = indexPath.row
+
         return cell
     }
     

@@ -10,8 +10,8 @@ import UIKit
 
 class ItemTVCell: UITableViewCell {
 
-    @IBOutlet weak var itemName: UITextField!
-    @IBOutlet weak var itemQuantity: UITextField!
+    @IBOutlet weak var itemName: TableViewTextField!
+    @IBOutlet weak var itemQuantity: TableViewTextField!
     @IBOutlet weak var cellLabel: UILabel!
     
     override func awakeFromNib() {
