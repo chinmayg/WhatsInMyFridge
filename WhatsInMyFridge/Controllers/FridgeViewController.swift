@@ -27,6 +27,11 @@ class FridgeViewController: UIViewController, UITableViewDataSource, UITableView
         UserDefaults.standard.register(defaults: ["Fridge" : ListAction.none.rawValue,
                                                   "Grocery" : ListAction.none.rawValue])
         
+        getOrginalListAlphabetical()
+        
+        fridgeTableView.keyboardDismissMode = .onDrag // .interactive
+        fridgeTableView.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
+        
     }
     
     @IBAction func addItemButton(_ sender: Any) {
@@ -150,26 +155,36 @@ class FridgeViewController: UIViewController, UITableViewDataSource, UITableView
         fridgeTableView.reloadData()
     }
     
-    func load() {
-        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Item")
+    func load(with request : NSFetchRequest<Item> = Item.fetchRequest()) {
+        hideTableView()
         
         do {
-            foodList = try managedContext.fetch(fetchRequest)
-            // Remove Grocery items from list
+            foodList = try managedContext.fetch(request)
+            
+            // Remove fridge items from list
             
             for (index,food) in foodList.enumerated().reversed() {
                 if (food.value(forKey: "currentList") as? String ?? "") == "Grocery" {
-                    print("List Count:", foodList.count)
-                    print("Index:",index);
-                    print("item:", foodList[index])
                     foodList.remove(at: index)
                 }
             }
         } catch let error as NSError {
             print("Could not fetch. \(error), \(error.userInfo)")
         }
+        
+        hideTableView()
+        
+        fridgeTableView.reloadData()
+        
     }
-
+    
+    func getOrginalListAlphabetical() {
+        let request : NSFetchRequest<Item> = Item.fetchRequest()
+        request.sortDescriptors  = [NSSortDescriptor(key: "name", ascending: true )]
+        
+        load(with: request)
+    }
+    
     func moveItemToOtherList(indexPath: IndexPath) {
         let entity = NSEntityDescription.entity(forEntityName: "Item", in: self.managedContext)!
         let food_fridge = self.foodList[indexPath.row]
@@ -186,6 +201,36 @@ class FridgeViewController: UIViewController, UITableViewDataSource, UITableView
         managedContext.delete(foodList[indexPath.row])
         foodList.remove(at: indexPath.row)
         save()
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        
+        textField.resignFirstResponder()
+        
+        return true
+    }
+}
+
+//MARK: - Search Bar Methods
+
+extension FridgeViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        let request : NSFetchRequest<Item> = Item.fetchRequest()
+        
+        request.predicate = NSPredicate(format: "name CONTAINS[cd] %@ ", searchBar.text!)
+        request.sortDescriptors  = [NSSortDescriptor(key: "name", ascending: true )]
+        
+        load(with: request)
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text?.count == 0 {
+            getOrginalListAlphabetical()
+            
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()
+            }
+        }
     }
 }
 

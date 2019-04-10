@@ -27,6 +27,9 @@ class GroceryViewController: UIViewController {
         groceryTableView.register(UINib(nibName: "ItemTVCell", bundle: nil), forCellReuseIdentifier: "groceryCell")
         
         getOrginalListAlphabetical()
+        
+        groceryTableView.keyboardDismissMode = .onDrag // .interactive
+        groceryTableView.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
     }
     
     @IBAction func addItemButton(_ sender: Any) {
@@ -107,7 +110,7 @@ class GroceryViewController: UIViewController {
             
             // Remove fridge items from list
             
-            for (index,food) in foodList.enumerated() {
+            for (index,food) in foodList.enumerated().reversed() {
                 if (food.value(forKey: "currentList") as? String ?? "") == "Fridge" {
                     foodList.remove(at: index)
                 }
@@ -146,6 +149,13 @@ class GroceryViewController: UIViewController {
         managedContext.delete(foodList[indexPath.row])
         foodList.remove(at: indexPath.row)
         save()
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        
+        textField.resignFirstResponder()
+
+        return true
     }
 }
 
