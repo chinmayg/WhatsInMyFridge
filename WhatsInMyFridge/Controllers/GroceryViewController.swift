@@ -2,6 +2,8 @@
 //  GroceryViewController.swift
 //  WhatsInMyFridge
 //
+//  This view controller is used to display all of the created grocery lists
+//
 //  Created by Chinmay Ghotkar on 2/5/19.
 //  Copyright © 2019 Chinmay Ghotkar. All rights reserved.
 //
@@ -15,7 +17,7 @@ class GroceryViewController: UIViewController {
     @IBOutlet weak var groceryTableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
     
-    private var foodList: [NSManagedObject] = []
+    private var listOfList: [List] = []
     let managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
     override func viewDidLoad() {
@@ -24,82 +26,53 @@ class GroceryViewController: UIViewController {
         groceryTableView.dataSource = self
         groceryTableView.delegate = self
         
-        groceryTableView.register(UINib(nibName: "ItemTVCell", bundle: nil), forCellReuseIdentifier: "groceryCell")
+        groceryTableView.register(UINib(nibName: "GroceryListsCellTableViewCell", bundle: nil), forCellReuseIdentifier: "groceryListCell")
         
-        getOrginalListAlphabetical()
-        
-        groceryTableView.keyboardDismissMode = .onDrag // .interactive
-        groceryTableView.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
+        load()
+
     }
     
     @IBAction func addItemButton(_ sender: Any) {
-        let alert = UIAlertController(title: "Add Food", message: "Add food to Grocery List", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Add New List", message: "", preferredStyle: .alert)
         
         // Add a text field to the alert for the new item's name
         alert.addTextField(configurationHandler: nil)
-        alert.textFields?[0].placeholder = "Food item Name"
-
-        // Add a text field to the alert for the new item's quantity
-        alert.addTextField(configurationHandler: nil)
-        alert.textFields?[1].placeholder = "How much of the item"
-
-        // Add a "cancel" button to the alert. This one doesn't need a handler
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.textFields?[0].placeholder = "New List Name"
         
         // Add a "OK" button to the alert. The handler calls addNewToDoItem()
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (_) in
-            if let name = alert.textFields?[0].text,let quantity = alert.textFields?[1].text
-            {
-                if let number = Int(quantity) {
-                    self.addNewFoodItem(name: name, quantity: number)
+            if let listName = alert.textFields?[0].text {
+                if listName.count == 0 {
+                    self.addNewList(with: "New List")
                 } else {
-                    self.addNewFoodItem(name: name, quantity: 0)
+                    self.addNewList(with: listName)
                 }
+            } else {
+                self.addNewList(with: "New List")
             }
         }))
+
+        // Add a "cancel" button to the alert. This one doesn't need a handler
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
         // Present the alert to the user
         self.present(alert, animated: true, completion: nil)
     }
     
-    private func addNewFoodItem(name: String, quantity: Int)
+    private func addNewList(with name: String)
     {
-        // Create new item and add it to the todo items list
-        let entity = NSEntityDescription.entity(forEntityName: "Item", in: managedContext)!
+        let newList = List(context: managedContext)
         
-        let food = NSManagedObject(entity: entity, insertInto: managedContext)
-
-        food.setValue(name, forKeyPath: "name")
-        food.setValue(quantity, forKeyPath: "quantity")
-        food.setValue("Grocery", forKey: "currentList")
-        foodList.append(food)
+        newList.name = name
+        
+        listOfList.append(newList)
         
         hideTableView()
-        
         save()
-    }
-    
-    @objc func textFieldDidChange(_ textField: TableViewTextField) {
-        print("textFieldChanged", textField.text!)
-        print("index row", textField.indexRow)
-        let food = foodList[textField.indexRow]
-        
-        if Int(textField.text!) == nil {
-            food.setValue(textField.text!, forKeyPath: "name")
-        } else {
-            food.setValue(Int(textField.text!), forKeyPath: "quantity")
-        }
-        
-        // 4
-        save()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        getOrginalListAlphabetical()
     }
     
     func hideTableView() {
-        if foodList.isEmpty {
+        if listOfList.isEmpty {
             self.groceryTableView.isHidden = true
         }
         else {
@@ -119,17 +92,17 @@ class GroceryViewController: UIViewController {
         groceryTableView.reloadData()
     }
     
-    func load(with request : NSFetchRequest<Item> = Item.fetchRequest()) {
+    func load(with request : NSFetchRequest<List> = List.fetchRequest()) {
         hideTableView()
         
         do {
-            foodList = try managedContext.fetch(request)
+            listOfList = try managedContext.fetch(request)
             
             // Remove fridge items from list
             
-            for (index,food) in foodList.enumerated().reversed() {
-                if (food.value(forKey: "currentList") as? String ?? "") == "Fridge" {
-                    foodList.remove(at: index)
+            for (index,food) in listOfList.enumerated() {
+                if (food.value(forKey: "name") as? String ?? "") == "Fridge" {
+                    listOfList.remove(at: index)
                 }
             }
         } catch let error as NSError {
@@ -143,28 +116,15 @@ class GroceryViewController: UIViewController {
     }
     
     func getOrginalListAlphabetical() {
-        let request : NSFetchRequest<Item> = Item.fetchRequest()
+        let request : NSFetchRequest<List> = List.fetchRequest()
         request.sortDescriptors  = [NSSortDescriptor(key: "name", ascending: true )]
         
         load(with: request)
     }
-        
-    func moveItemToOtherList(indexPath: IndexPath) {
-        let entity = NSEntityDescription.entity(forEntityName: "Item", in: self.managedContext)!
-        let food_fridge = self.foodList[indexPath.row]
-        let food_grocery = NSManagedObject(entity: entity, insertInto: self.managedContext)
-        food_grocery.setValue(food_fridge.value(forKeyPath: "name"), forKeyPath: "name")
-        food_grocery.setValue(food_fridge.value(forKeyPath: "quantity"), forKeyPath: "quantity")
-        
-        
-        managedContext.delete(self.foodList[indexPath.row])
-        foodList.remove(at: indexPath.row)
-        save()
-    }
-    
+
     func deleteItemFromList(indexPath: IndexPath) {
-        managedContext.delete(foodList[indexPath.row])
-        foodList.remove(at: indexPath.row)
+        managedContext.delete(listOfList[indexPath.row])
+        listOfList.remove(at: indexPath.row)
         save()
     }
     
@@ -184,7 +144,7 @@ extension GroceryViewController:  UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return foodList.count
+        return listOfList.count
     }
 }
 
@@ -194,55 +154,52 @@ extension GroceryViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = groceryTableView.dequeueReusableCell(withIdentifier: "groceryCell") as! ItemTVCell
-        let food = foodList[indexPath.row]
+        let cell = groceryTableView.dequeueReusableCell(withIdentifier: "groceryListCell") as! GroceryListsCellTableViewCell
+        let list = listOfList[indexPath.row]
         
-        cell.itemName.adjustsFontSizeToFitWidth = true
-        cell.itemName.text = food.value(forKeyPath: "name") as? String
-        cell.itemName.indexRow = indexPath.row
-        cell.itemName.addTarget(self, action: #selector(textFieldDidChange), for: .editingDidEnd)
-        
-        
-        cell.itemQuantity.adjustsFontSizeToFitWidth = true
-        cell.itemQuantity.addTarget(self, action: #selector(textFieldDidChange), for: .editingDidEnd)
-        cell.itemQuantity.text = "\(food.value(forKeyPath: "quantity") as? Int ?? 0)"
-        cell.itemQuantity.indexRow = indexPath.row
+        cell.listName.text = list.name
 
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print(listOfList[indexPath.row].name!)
+        performSegue(withIdentifier: "customListSegue", sender: self)
         
-        let selectedAction = UserDefaults.standard.integer(forKey: "Grocery")
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destinationVC = segue.destination as! CustomListViewController
         
-        if selectedAction == ListAction.move.rawValue {
-            moveItemToOtherList(indexPath: indexPath)
-        } else if selectedAction == ListAction.delete.rawValue {
-            deleteItemFromList(indexPath: indexPath)
-        } else {
-            let alertController = UIAlertController(title: "", message: "Do you want to move this item to Fridge List or remove it?", preferredStyle: .alert)
-            
-            alertController.addAction(UIAlertAction(title: "Move to Fridge List", style: .destructive, handler: { (_) in
-                self.moveItemToOtherList(indexPath: indexPath)
-            }))
-            
-            alertController.addAction(UIAlertAction(title: "Remove from List", style: .destructive, handler: { (_) in
-                self.deleteItemFromList(indexPath: indexPath)
-            }))
-            
-            alertController.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
-            
-            present(alertController, animated: true, completion: nil)
+        if let indexPath = groceryTableView.indexPathForSelectedRow {
+            destinationVC.selectedList = listOfList[indexPath.row]
         }
     }
     
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration?
+    {
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (action, view, handler) in
+            print("Delete Action Tapped")
+            self.deleteItemFromList(indexPath: indexPath)
+        }
+        
+        let editAction = UIContextualAction(style: .destructive, title: "Edit") { (action, view, handler) in
+            print("Edit Action Tapped")
+            self.performSegue(withIdentifier: "customListSegue", sender: self)
+        }
+        
+        deleteAction.backgroundColor = .red
+        editAction.backgroundColor = .blue
+        let configuration = UISwipeActionsConfiguration(actions: [deleteAction, editAction])
+        return configuration
+    }
 }
 
 //MARK: - Search Bar Methods
 
 extension GroceryViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        let request : NSFetchRequest<Item> = Item.fetchRequest()
+        let request : NSFetchRequest<List> = List.fetchRequest()
 
         request.predicate = NSPredicate(format: "name CONTAINS[cd] %@ ", searchBar.text!)
         request.sortDescriptors  = [NSSortDescriptor(key: "name", ascending: true )]

@@ -30,7 +30,7 @@ class FridgeViewController: UIViewController, UITableViewDataSource, UITableView
         getOrginalListAlphabetical()
         
         fridgeTableView.keyboardDismissMode = .onDrag // .interactive
-        fridgeTableView.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
+//        fridgeTableView.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
         
     }
     
@@ -111,11 +111,11 @@ class FridgeViewController: UIViewController, UITableViewDataSource, UITableView
         cell.itemName.adjustsFontSizeToFitWidth = true
         cell.itemName.text = food.value(forKeyPath: "name") as? String
         cell.itemName.indexRow = indexPath.row
-        cell.itemName.addTarget(self, action: #selector(textFieldDidChange), for: .editingDidEnd)
+        //cell.itemName.addTarget(self, action: #selector(textFieldDidChange), for: .editingDidEnd)
 
         
         cell.itemQuantity.adjustsFontSizeToFitWidth = true
-        cell.itemQuantity.addTarget(self, action: #selector(textFieldDidChange), for: .editingDidEnd)
+       // cell.itemQuantity.addTarget(self, action: #selector(textFieldDidChange), for: .editingDidEnd)
         cell.itemQuantity.text = "\(food.value(forKeyPath: "quantity") as? Int ?? 0)"
         cell.itemQuantity.indexRow = indexPath.row
 
@@ -126,6 +126,8 @@ class FridgeViewController: UIViewController, UITableViewDataSource, UITableView
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedAction = UserDefaults.standard.integer(forKey: "Fridge")
+        
+        print(indexPath.row)
         
         if selectedAction == ListAction.move.rawValue {
             moveItemToOtherList(indexPath: indexPath)
