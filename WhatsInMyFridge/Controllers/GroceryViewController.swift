@@ -67,17 +67,7 @@ class GroceryViewController: UIViewController {
         
         listOfList.append(newList)
         
-        hideTableView()
         save()
-    }
-    
-    func hideTableView() {
-        if listOfList.isEmpty {
-            self.groceryTableView.isHidden = true
-        }
-        else {
-            self.groceryTableView.isHidden = false
-        }
     }
     
     func save() {
@@ -86,31 +76,27 @@ class GroceryViewController: UIViewController {
         } catch let error as NSError {
             print("Could not save. \(error), \(error.userInfo)")
         }
-        
-        hideTableView()
-        
+
         groceryTableView.reloadData()
     }
     
-    func load(with request : NSFetchRequest<List> = List.fetchRequest()) {
-        hideTableView()
+    func load(with request : NSFetchRequest<List> = List.fetchRequest(), predicate: NSPredicate? = nil) {
         
+        let parentListPredicate = NSPredicate(format: "NOT name MATCHES %@", "Fridge");
+        
+        request.sortDescriptors  = [NSSortDescriptor(key: "name", ascending: true )]
+        
+        if let additionalPredicate = predicate {
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [parentListPredicate, additionalPredicate])
+        } else {
+            request.predicate = parentListPredicate
+        }
         do {
             listOfList = try managedContext.fetch(request)
-            
-            // Remove fridge items from list
-            
-            for (index,food) in listOfList.enumerated() {
-                if (food.value(forKey: "name") as? String ?? "") == "Fridge" {
-                    listOfList.remove(at: index)
-                }
-            }
         } catch let error as NSError {
             print("Could not fetch. \(error), \(error.userInfo)")
         }
-        
-        hideTableView()
-        
+
         groceryTableView.reloadData()
 
     }
@@ -199,12 +185,7 @@ extension GroceryViewController: UITableViewDataSource {
 
 extension GroceryViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        let request : NSFetchRequest<List> = List.fetchRequest()
-
-        request.predicate = NSPredicate(format: "name CONTAINS[cd] %@ ", searchBar.text!)
-        request.sortDescriptors  = [NSSortDescriptor(key: "name", ascending: true )]
-        
-        load(with: request)
+        load(predicate: NSPredicate(format: "name CONTAINS[cd] %@ ", searchBar.text!))
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
