@@ -120,6 +120,28 @@ class GroceryViewController: UIViewController {
 
         return true
     }
+    
+    func showEditDialog(for tableRow : Int) {
+        let alert = UIAlertController(title: "Edit List Name", message: "", preferredStyle: .alert)
+        
+        // Add a text field to the alert for the new item's name
+        alert.addTextField(configurationHandler: nil)
+        alert.textFields?[0].placeholder = listOfList[tableRow].name
+        
+        // Add a "OK" button to the alert. The handler calls addNewToDoItem()
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (_) in
+            if let name = alert.textFields?[0].text {
+                self.listOfList[tableRow].name = name
+            }
+            
+            self.save()
+        }))
+        
+        // Add a "cancel" button to the alert. This one doesn't need a handler
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        self.present(alert, animated: true, completion: nil)
+    }
 }
 
 //MARK: - TableView Delegate Methods
@@ -171,7 +193,7 @@ extension GroceryViewController: UITableViewDataSource {
         
         let editAction = UIContextualAction(style: .destructive, title: "Edit") { (action, view, handler) in
             print("Edit Action Tapped")
-            self.performSegue(withIdentifier: "customListSegue", sender: self)
+            self.showEditDialog(for: indexPath.row)
         }
         
         deleteAction.backgroundColor = .red

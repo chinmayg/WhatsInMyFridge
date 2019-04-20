@@ -12,6 +12,8 @@ import CoreData
 class CustomListViewController: UIViewController {
 
     private var foodList : [Item] = []
+    private var listOfList: [List] = []
+
     @IBOutlet weak var customListTableView: UITableView!
     @IBOutlet weak var customListTitle: UINavigationItem!
     
@@ -36,7 +38,7 @@ class CustomListViewController: UIViewController {
     }
     
     @IBAction func addItem(_ sender: Any) {
-        let alert = UIAlertController(title: "Add Food", message: "", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Add Item", message: "", preferredStyle: .alert)
         
         // Add a text field to the alert for the new item's name
         alert.addTextField(configurationHandler: nil)
@@ -72,7 +74,7 @@ class CustomListViewController: UIViewController {
         // 3
         food.setValue(name, forKeyPath: "name")
         food.setValue(quantity, forKeyPath: "quantity")
-        food.setValue("Fridge", forKeyPath: "currentList")
+        
         food.parentList = selectedList
         foodList.append(food)
         
@@ -121,6 +123,84 @@ class CustomListViewController: UIViewController {
         customListTableView.reloadData()
 
     }
+    
+    func loadLists(with request : NSFetchRequest<List> = List.fetchRequest(), predicate: NSPredicate? = nil) {
+    
+        
+        let parentListPredicate = NSPredicate(format: "NOT name MATCHES %@", selectedList!.name!)
+
+        request.sortDescriptors  = [NSSortDescriptor(key: "name", ascending: true )]
+        
+        if let additionalPredicate = predicate {
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [parentListPredicate, additionalPredicate])
+        } else {
+            request.predicate = parentListPredicate
+        }
+        
+        do {
+            listOfList = try managedContext.fetch(request)
+        } catch let error as NSError {
+            print("Could not fetch. \(error), \(error.userInfo)")
+        }
+    }
+    
+    
+    func showEditDialog(for tableRow : Int) {
+        let alert = UIAlertController(title: "Edit Item", message: "", preferredStyle: .alert)
+        
+        // Add a text field to the alert for the new item's name
+        alert.addTextField(configurationHandler: nil)
+        alert.textFields?[0].placeholder = foodList[tableRow].name
+        // Add a text field to the alert for the new item's quantity
+        alert.addTextField(configurationHandler: nil)
+        alert.textFields?[1].placeholder = String(self.foodList[tableRow].quantity)
+
+        // Add a "OK" button to the alert. The handler calls addNewToDoItem()
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (_) in
+            if let quantity = alert.textFields?[1].text
+            {
+                if let number = Int16(quantity) {
+                    self.foodList[tableRow].quantity = number
+                } else {
+                    self.foodList[tableRow].quantity = 0
+                }
+            }
+            
+            if let name = alert.textFields?[0].text {
+                self.foodList[tableRow].name = name
+            }
+            
+            self.save()
+        }))
+        
+        // Add a "cancel" button to the alert. This one doesn't need a handler
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func showMoveListDialog(for tableRow : Int) {
+        let alert = UIAlertController(title: "Move to List", message: "", preferredStyle: .actionSheet)
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        loadLists()
+        
+        for list in listOfList {
+            
+            let listAction = UIAlertAction(title: list.name, style: .default) { (_) in
+                self.foodList[tableRow].parentList = list
+                self.save()
+                self.load()
+            }
+            
+            alert.addAction(listAction)
+            
+        }
+        
+        print(listOfList.count)
+        self.present(alert, animated: true)
+    }
 }
 //MARK: - TableView Delegate Methods
 
@@ -153,6 +233,7 @@ extension CustomListViewController: UITableViewDataSource {
         // cell.itemQuantity.addTarget(self, action: #selector(textFieldDidChange), for: .editingDidEnd)
         cell.itemQuantity.text = "\(food.value(forKeyPath: "quantity") as? Int ?? 0)"
         cell.itemQuantity.indexRow = indexPath.row
+        cell.selectionStyle = .none
 
         cell.cellLabel.text = "# Needed"
         return cell
@@ -167,12 +248,19 @@ extension CustomListViewController: UITableViewDataSource {
 
         let editAction = UIContextualAction(style: .destructive, title: "Edit") { (action, view, handler) in
             print("Edit Action Tapped")
-//            self.performSegue(withIdentifier: "customListSegue", sender: self)
+            self.showEditDialog(for: indexPath.row)
+        }
+        
+        let moveAction = UIContextualAction(style: .destructive, title: "Move") { (action, view, handler) in
+            print("Move Action Tapped")
+            self.showMoveListDialog(for: indexPath.row)
         }
 
         deleteAction.backgroundColor = .red
         editAction.backgroundColor = .blue
-        let configuration = UISwipeActionsConfiguration(actions: [deleteAction, editAction])
+        moveAction.backgroundColor = .gray
+        
+        let configuration = UISwipeActionsConfiguration(actions: [deleteAction, editAction, moveAction])
         return configuration
     }
 }
