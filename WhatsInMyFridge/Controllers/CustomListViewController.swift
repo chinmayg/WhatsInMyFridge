@@ -30,11 +30,15 @@ class CustomListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        customListTitle.title = selectedList!.name!
+        if let list = selectedList {
+            self.customListTitle.title = list.name!
+        } else {
+            print("Selected List is null\n")
+        }
         customListTableView.delegate = self
         customListTableView.dataSource = self
 
-        customListTableView.register(UINib(nibName: "ItemTVCell", bundle: nil), forCellReuseIdentifier: "customListCell")
+        customListTableView.register(UINib(nibName: "GroceryListsCellTableViewCell", bundle: nil), forCellReuseIdentifier: "customListCell")
     }
     
     @IBAction func addItem(_ sender: Any) {
@@ -219,24 +223,18 @@ extension CustomListViewController:  UITableViewDelegate {
 extension CustomListViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
-        let cell = customListTableView.dequeueReusableCell(withIdentifier: "customListCell") as! ItemTVCell
+        
+        let cell = customListTableView.dequeueReusableCell(withIdentifier: "customListCell") as! GroceryListsCellTableViewCell
         let food = foodList[indexPath.row]
+        
+        cell.listName.text = "\(food.quantity) \(food.name ?? "")"
 
-        cell.itemName.adjustsFontSizeToFitWidth = true
-        cell.itemName.text = food.value(forKeyPath: "name") as? String
-        cell.itemName.indexRow = indexPath.row
-        //cell.itemName.addTarget(self, action: #selector(textFieldDidChange), for: .editingDidEnd)
-
-
-        cell.itemQuantity.adjustsFontSizeToFitWidth = true
-        // cell.itemQuantity.addTarget(self, action: #selector(textFieldDidChange), for: .editingDidEnd)
-        cell.itemQuantity.text = "\(food.value(forKeyPath: "quantity") as? Int ?? 0)"
-        cell.itemQuantity.indexRow = indexPath.row
-        cell.selectionStyle = .none
-
-        cell.cellLabel.text = "# Needed"
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        showEditDialog(for: indexPath.row)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration?

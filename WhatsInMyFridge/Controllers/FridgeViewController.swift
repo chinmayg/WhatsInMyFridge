@@ -27,7 +27,7 @@ class FridgeViewController: UIViewController {
         fridgeTableView.delegate = self
         
         // Used to register the custom .xib file
-        fridgeTableView.register(UINib(nibName: "ItemTVCell", bundle: nil), forCellReuseIdentifier: "fridgeCell")
+        fridgeTableView.register(UINib(nibName: "GroceryListsCellTableViewCell", bundle: nil), forCellReuseIdentifier: "fridgeCell")
         UserDefaults.standard.register(defaults: ["Fridge" : ListAction.none.rawValue,
                                                   "Grocery" : ListAction.none.rawValue])
         loadFridge()
@@ -41,10 +41,13 @@ class FridgeViewController: UIViewController {
     @IBAction func addItemButton(_ sender: Any) {
         let alert = UIAlertController(title: "Add Food", message: "Add food to Fridge List", preferredStyle: .alert)
         
+        
         // Add a text field to the alert for the new item's name
+        
         alert.addTextField(configurationHandler: nil)
         alert.textFields?[0].placeholder = "Food item Name"
         // Add a text field to the alert for the new item's quantity
+
         alert.addTextField(configurationHandler: nil)
         alert.textFields?[1].placeholder = "How much of the item"
         // Add a "cancel" button to the alert. This one doesn't need a handler
@@ -283,22 +286,11 @@ extension FridgeViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = fridgeTableView.dequeueReusableCell(withIdentifier: "fridgeCell") as! ItemTVCell
+        let cell = fridgeTableView.dequeueReusableCell(withIdentifier: "fridgeCell") as! GroceryListsCellTableViewCell
         let food = foodList[indexPath.row]
         
-        cell.itemName.adjustsFontSizeToFitWidth = true
-        cell.itemName.text = food.value(forKeyPath: "name") as? String
-        cell.itemName.indexRow = indexPath.row
-        //cell.itemName.addTarget(self, action: #selector(textFieldDidChange), for: .editingDidEnd)
+        cell.listName.text = "\(food.quantity) \(food.name ?? "")"
         
-        
-        cell.itemQuantity.adjustsFontSizeToFitWidth = true
-        // cell.itemQuantity.addTarget(self, action: #selector(textFieldDidChange), for: .editingDidEnd)
-        cell.itemQuantity.text = "\(food.value(forKeyPath: "quantity") as? Int ?? 0)"
-        cell.itemQuantity.indexRow = indexPath.row
-        cell.selectionStyle = .none
-
-        cell.cellLabel.text = "# in Fridge"
         return cell
     }
     
@@ -325,6 +317,12 @@ extension FridgeViewController: UITableViewDataSource {
         
         let configuration = UISwipeActionsConfiguration(actions: [deleteAction, editAction, moveAction])
         return configuration
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        showEditDialog(for: indexPath.row)
+        tableView.deselectRow(at: indexPath, animated: true)
+
     }
 }
 

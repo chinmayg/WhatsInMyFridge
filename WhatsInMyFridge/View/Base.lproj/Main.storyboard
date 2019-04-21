@@ -252,7 +252,6 @@
                     <connections>
                         <segue destination="7um-vI-YBc" kind="relationship" relationship="viewControllers" id="j3m-gB-SMC"/>
                         <segue destination="Xgf-hw-XvO" kind="relationship" relationship="viewControllers" id="tnP-LT-MxZ"/>
-                        <segue destination="aSY-cD-i6u" kind="relationship" relationship="viewControllers" id="7Gp-nx-tMn"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="peN-sc-IAS" userLabel="First Responder" sceneMemberID="firstResponder"/>

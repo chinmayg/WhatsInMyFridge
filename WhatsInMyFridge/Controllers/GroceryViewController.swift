@@ -173,13 +173,15 @@ extension GroceryViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print(listOfList[indexPath.row].name!)
         performSegue(withIdentifier: "customListSegue", sender: self)
-        
+        tableView.deselectRow(at: indexPath, animated: true)
+
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destinationVC = segue.destination as! CustomListViewController
-        
+        print(listOfList.count)
         if let indexPath = groceryTableView.indexPathForSelectedRow {
+            print("Prepare print", listOfList[indexPath.row].name!)
             destinationVC.selectedList = listOfList[indexPath.row]
         }
     }
