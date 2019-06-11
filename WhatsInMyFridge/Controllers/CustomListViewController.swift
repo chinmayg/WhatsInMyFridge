@@ -51,7 +51,7 @@ class CustomListViewController: UIViewController {
         alert.addTextField(configurationHandler: nil)
         alert.textFields?[1].placeholder = "How many?"
         // Add a "cancel" button to the alert. This one doesn't need a handler
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
         
         // Add a "OK" button to the alert. The handler calls addNewToDoItem()
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (_) in
@@ -178,7 +178,7 @@ class CustomListViewController: UIViewController {
         }))
         
         // Add a "cancel" button to the alert. This one doesn't need a handler
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
         
         self.present(alert, animated: true, completion: nil)
     }
@@ -186,7 +186,7 @@ class CustomListViewController: UIViewController {
     func showMoveListDialog(for tableRow : Int) {
         let alert = UIAlertController(title: "Move to List", message: "", preferredStyle: .actionSheet)
         
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
         
         loadLists()
         

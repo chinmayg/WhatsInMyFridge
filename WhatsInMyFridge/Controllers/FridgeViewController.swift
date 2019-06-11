@@ -34,8 +34,6 @@ class FridgeViewController: UIViewController {
         load()
         
         fridgeTableView.keyboardDismissMode = .onDrag // .interactive
-//        fridgeTableView.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
-        
     }
     
     @IBAction func addItemButton(_ sender: Any) {
@@ -50,8 +48,6 @@ class FridgeViewController: UIViewController {
 
         alert.addTextField(configurationHandler: nil)
         alert.textFields?[1].placeholder = "How much of the item"
-        // Add a "cancel" button to the alert. This one doesn't need a handler
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
         // Add a "OK" button to the alert. The handler calls addNewToDoItem()
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (_) in
@@ -60,11 +56,14 @@ class FridgeViewController: UIViewController {
                 if let number = Int(quantity) {
                     self.addNewFoodItem(name: name, quantity: number)
                 } else {
-                    self.addNewFoodItem(name: name, quantity: 0)
+                    self.addNewFoodItem(name: name, quantity: -1)
                 }
             }
         }))
         
+        // Add a "cancel" button to the alert. This one doesn't need a handler
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+    
         // Present the alert to the user
         self.present(alert, animated: true, completion: nil)
     }
@@ -72,7 +71,6 @@ class FridgeViewController: UIViewController {
     private func addNewFoodItem(name: String, quantity: Int)
     {
         // Create new item and add it to the todo items list
-        //data.append(Item(name: name, quanity: quantity, dateAdded: "02/28/2019"))
         let food = Item(context: managedContext)
 
         food.setValue(name, forKeyPath: "name")
@@ -217,7 +215,9 @@ class FridgeViewController: UIViewController {
         alert.textFields?[0].placeholder = foodList[tableRow].name
         // Add a text field to the alert for the new item's quantity
         alert.addTextField(configurationHandler: nil)
-        alert.textFields?[1].placeholder = String(self.foodList[tableRow].quantity)
+        if self.foodList[tableRow].quantity != -1 {
+            alert.textFields?[1].placeholder = String(self.foodList[tableRow].quantity)
+        }
         
         // Add a "OK" button to the alert. The handler calls addNewToDoItem()
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (_) in
@@ -226,7 +226,7 @@ class FridgeViewController: UIViewController {
                 if let number = Int16(quantity) {
                     self.foodList[tableRow].quantity = number
                 } else {
-                    self.foodList[tableRow].quantity = 0
+                    self.foodList[tableRow].quantity = -1
                 }
             }
             
@@ -238,7 +238,7 @@ class FridgeViewController: UIViewController {
         }))
         
         // Add a "cancel" button to the alert. This one doesn't need a handler
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
         
         self.present(alert, animated: true, completion: nil)
     }
@@ -246,7 +246,7 @@ class FridgeViewController: UIViewController {
     func showMoveListDialog(for tableRow : Int) {
         let alert = UIAlertController(title: "Lists", message: "", preferredStyle: .actionSheet)
         
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
         
         loadLists()
         
@@ -289,7 +289,11 @@ extension FridgeViewController: UITableViewDataSource {
         let cell = fridgeTableView.dequeueReusableCell(withIdentifier: "fridgeCell") as! GroceryListsCellTableViewCell
         let food = foodList[indexPath.row]
         
-        cell.listName.text = "\(food.quantity) \(food.name ?? "")"
+        if food.quantity == -1 {
+            cell.listName.text = "\(food.name ?? "")"
+        } else {
+            cell.listName.text = "\(food.quantity) \(food.name ?? "")"
+        }
         
         return cell
     }

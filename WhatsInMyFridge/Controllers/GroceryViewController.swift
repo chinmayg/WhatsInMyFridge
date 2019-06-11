@@ -53,7 +53,7 @@ class GroceryViewController: UIViewController {
         }))
 
         // Add a "cancel" button to the alert. This one doesn't need a handler
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
         
         // Present the alert to the user
         self.present(alert, animated: true, completion: nil)
@@ -138,7 +138,7 @@ class GroceryViewController: UIViewController {
         }))
         
         // Add a "cancel" button to the alert. This one doesn't need a handler
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
         
         self.present(alert, animated: true, completion: nil)
     }
