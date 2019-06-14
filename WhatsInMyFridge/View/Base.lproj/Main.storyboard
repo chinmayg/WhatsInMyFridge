@@ -224,7 +224,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="hqc-9c-5v0"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Your Fridge" id="Vj5-KQ-1AY">
+                    <navigationItem key="navigationItem" title="Your Kitchen" id="Vj5-KQ-1AY">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="0Ny-CN-YRv">
                             <connections>
                                 <action selector="addItemButton:" destination="YY4-rO-Q03" id="MfK-cu-uti"/>
@@ -262,7 +262,7 @@
         <scene sceneID="O9K-zg-7d5">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="7um-vI-YBc" userLabel="FridgeNavBar" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Your Fridge" image="groceries" landscapeImage="groceries" id="u0F-VT-M7h" userLabel="Fridge"/>
+                    <tabBarItem key="tabBarItem" title="Your Kitchen" image="groceries" landscapeImage="groceries" id="u0F-VT-M7h" userLabel="Fridge"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="evN-WV-AN6">
                         <rect key="frame" x="0.0" y="44" width="375" height="44"/>

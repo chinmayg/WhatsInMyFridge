@@ -58,9 +58,13 @@ class CustomListViewController: UIViewController {
             if let name = alert.textFields?[0].text,let quantity = alert.textFields?[1].text
             {
                 if let number = Int(quantity) {
-                    self.addNewFoodItem(name: name, quantity: number)
+                    if number >= 0 {
+                        self.addNewFoodItem(name: name, quantity: number)
+                    } else {
+                        self.addNewFoodItem(name: name, quantity: -1)
+                    }
                 } else {
-                    self.addNewFoodItem(name: name, quantity: 0)
+                    self.addNewFoodItem(name: name, quantity: -1)
                 }
             }
         }))
@@ -157,23 +161,37 @@ class CustomListViewController: UIViewController {
         alert.textFields?[0].placeholder = foodList[tableRow].name
         // Add a text field to the alert for the new item's quantity
         alert.addTextField(configurationHandler: nil)
-        alert.textFields?[1].placeholder = String(self.foodList[tableRow].quantity)
+        if self.foodList[tableRow].quantity != -1 {
+            alert.textFields?[1].placeholder = String(self.foodList[tableRow].quantity)
+        }
 
         // Add a "OK" button to the alert. The handler calls addNewToDoItem()
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (_) in
-            if let quantity = alert.textFields?[1].text
+            if let quantity = alert.textFields?[1].text, let name = alert.textFields?[0].text
             {
-                if let number = Int16(quantity) {
-                    self.foodList[tableRow].quantity = number
-                } else {
-                    self.foodList[tableRow].quantity = 0
+                if !quantity.isEmpty {
+                    if let number = Int(quantity) {
+                        if number >= 0 {
+                            self.addNewFoodItem(name: name, quantity: number)
+                        } else {
+                            self.addNewFoodItem(name: name, quantity: -1)
+                        }
+                    } else {
+                        self.foodList[tableRow].quantity = -1
+                    }
+                }
+                
+                if !name.isEmpty {
+                    self.foodList[tableRow].name = name
                 }
             }
             
-            if let name = alert.textFields?[0].text {
-                self.foodList[tableRow].name = name
-            }
-            
+            self.save()
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Delete", style: .default, handler: { (_) in
+            self.managedContext.delete(self.foodList[tableRow])
+            self.foodList.remove(at: tableRow)
             self.save()
         }))
         
@@ -227,7 +245,11 @@ extension CustomListViewController: UITableViewDataSource {
         let cell = customListTableView.dequeueReusableCell(withIdentifier: "customListCell") as! GroceryListsCellTableViewCell
         let food = foodList[indexPath.row]
         
-        cell.listName.text = "\(food.quantity) \(food.name ?? "")"
+        if food.quantity == -1 {
+            cell.listName.text = "\(food.name ?? "")"
+        } else {
+            cell.listName.text = "\(food.quantity) \(food.name ?? "")"
+        }
 
         return cell
     }
