@@ -41,6 +41,35 @@ class ItemCoreDataManager {
         return setQuantity
     }
     
+    func addItemAction(controller : UIViewController)
+    {
+        let alert = UIAlertController(title: "Add an Item", message: "", preferredStyle: .alert)
+        
+        // Add a text field to the alert for the new item's name
+        
+        alert.addTextField(configurationHandler: nil)
+        alert.textFields?[0].placeholder = "Item Name"
+        // Add a text field to the alert for the new item's quantity
+        
+        alert.addTextField(configurationHandler: nil)
+        alert.textFields?[1].placeholder = "Item Quantity"
+        
+        // Add a "OK" button to the alert. The handler calls addNewToDoItem()
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (_) in
+            if let name = alert.textFields?[0].text, let quantity = alert.textFields?[1].text
+            {
+                self.addNewItem(with: name, quantity: quantity)
+                self.currentTableView.reloadData()
+            }
+        }))
+        
+        // Add a "cancel" button to the alert. This one doesn't need a handler
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+        
+        // Present the alert to the user
+        controller.present(alert, animated: true, completion: nil)
+    }
+    
     func addNewItem(with name: String, quantity: String)
     {
         let setQuantity = checkIfCorrectQuantity(testQuantity: quantity)
@@ -71,6 +100,14 @@ class ItemCoreDataManager {
         item.setValue(setQuantity, forKeyPath: "quantity")
         
         save()
+    }
+    
+    func getRowOutputString(item : Item) -> String {
+        if item.quantity == -1 {
+            return "\(item.name ?? "")"
+        } else {
+            return "\(item.quantity) \(item.name ?? "")"
+        }
     }
     
     func save() {
@@ -127,6 +164,9 @@ class ItemCoreDataManager {
             print("Could not fetch. \(error), \(error.userInfo)")
         }
         
+        print(itemList)
+        print(itemList.count)
+        currentTableView.reloadData()
     }
     
     func loadLists(with request : NSFetchRequest<List> = List.fetchRequest(), predicate: NSPredicate? = nil) {

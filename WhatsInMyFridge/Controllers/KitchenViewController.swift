@@ -32,31 +32,7 @@ class KitchenViewController: UIViewController {
     }
     
     @IBAction func addItemButton(_ sender: Any) {
-        let alert = UIAlertController(title: "Add an Item", message: "", preferredStyle: .alert)
-        
-        // Add a text field to the alert for the new item's name
-        
-        alert.addTextField(configurationHandler: nil)
-        alert.textFields?[0].placeholder = "Item Name"
-        // Add a text field to the alert for the new item's quantity
-
-        alert.addTextField(configurationHandler: nil)
-        alert.textFields?[1].placeholder = "Item Quantity"
-        
-        // Add a "OK" button to the alert. The handler calls addNewToDoItem()
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (_) in
-            if let name = alert.textFields?[0].text, let quantity = alert.textFields?[1].text
-            {
-                self.itemManager.addNewItem(with: name, quantity: quantity)
-                self.kitchenTableView.reloadData()
-            }
-        }))
-        
-        // Add a "cancel" button to the alert. This one doesn't need a handler
-        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
-    
-        // Present the alert to the user
-        self.present(alert, animated: true, completion: nil)
+        itemManager.addItemAction(controller: self)
     }
     
     @objc func textFieldDidChange(_ textField: TableViewTextField) {
@@ -118,13 +94,9 @@ extension KitchenViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = kitchenTableView.dequeueReusableCell(withIdentifier: "fridgeCell") as! GroceryListsCellTableViewCell
-        let food = itemManager.itemList[indexPath.row]
+        let item = itemManager.itemList[indexPath.row]
         
-        if food.quantity == -1 {
-            cell.listName.text = "\(food.name ?? "")"
-        } else {
-            cell.listName.text = "\(food.quantity) \(food.name ?? "")"
-        }
+        cell.listName.text = itemManager.getRowOutputString(item: item)
         
         return cell
     }
