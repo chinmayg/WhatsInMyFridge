@@ -43,20 +43,15 @@ class CustomListViewController: UIViewController {
             print("Selected List is null\n")
         }
         
+        customListTableView.keyboardDismissMode = .onDrag // .interactive
         customListTableView.reloadData()
     }
     
     @IBAction func addItem(_ sender: Any) {
         itemManager.addItemAction(controller: self)
     }
-    
-    func getOriginalListAlphabetical() {
-        let request : NSFetchRequest<Item> = Item.fetchRequest()
-        request.sortDescriptors  = [NSSortDescriptor(key: "name", ascending: true )]
-        
-        itemManager.load(with: request)
-    }
 }
+
 //MARK: - TableView Delegate Methods
 
 extension CustomListViewController:  UITableViewDelegate {
@@ -123,8 +118,8 @@ extension CustomListViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchBar.text?.count == 0 {
-            getOriginalListAlphabetical()
-            
+            itemManager.getOrginalListAlphabetical()
+
             DispatchQueue.main.async {
                 searchBar.resignFirstResponder()
             }

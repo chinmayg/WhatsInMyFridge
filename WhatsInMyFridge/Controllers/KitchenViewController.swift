@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import CoreData
 
 class KitchenViewController: UIViewController {
 
@@ -23,9 +22,11 @@ class KitchenViewController: UIViewController {
         
         // Used to register the custom .xib file
         kitchenTableView.register(UINib(nibName: "GroceryListsCellTableViewCell", bundle: nil), forCellReuseIdentifier: "fridgeCell")
+        
         itemManager = ItemCoreDataManager(tableView: kitchenTableView)
         itemManager.loadFridge()
         itemManager.load()
+        
         kitchenTableView.reloadData()
 
         kitchenTableView.keyboardDismissMode = .onDrag // .interactive
@@ -33,21 +34,6 @@ class KitchenViewController: UIViewController {
     
     @IBAction func addItemButton(_ sender: Any) {
         itemManager.addItemAction(controller: self)
-    }
-    
-    @objc func textFieldDidChange(_ textField: TableViewTextField) {
-        print("textFieldChanged", textField.text!)
-        print("index row", textField.indexRow)
-        let food = itemManager.itemList[textField.indexRow]
-        
-        if Int(textField.text!) == nil {
-            food.setValue(textField.text!, forKeyPath: "name")
-        } else {
-            food.setValue(Int(textField.text!), forKeyPath: "quantity")
-        }
-        
-        // 4
-        itemManager.save()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -58,12 +44,7 @@ class KitchenViewController: UIViewController {
         kitchenTableView.reloadData()
     }
     
-    func getOrginalListAlphabetical() {
-        let request : NSFetchRequest<Item> = Item.fetchRequest()
-        request.sortDescriptors  = [NSSortDescriptor(key: "name", ascending: true )]
-        
-        itemManager.load(with: request)
-    }
+
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         
@@ -141,7 +122,7 @@ extension KitchenViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchBar.text?.count == 0 {
-            getOrginalListAlphabetical()
+            itemManager.getOrginalListAlphabetical()
             
             DispatchQueue.main.async {
                 searchBar.resignFirstResponder()

@@ -27,7 +27,8 @@ class GroceryViewController: UIViewController {
         groceryTableView.delegate = self
         
         groceryTableView.register(UINib(nibName: "GroceryListsCellTableViewCell", bundle: nil), forCellReuseIdentifier: "groceryListCell")
-        
+        groceryTableView.keyboardDismissMode = .onDrag // .interactive
+
         load()
 
     }

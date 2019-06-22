@@ -187,6 +187,13 @@ class ItemCoreDataManager {
         }
     }
     
+    func getOrginalListAlphabetical() {
+        let request : NSFetchRequest<Item> = Item.fetchRequest()
+        request.sortDescriptors  = [NSSortDescriptor(key: "name", ascending: true )]
+        
+        load(with: request)
+    }
+    
     func deleteItemFromList(for tableRow : Int) {
         managedContext.delete(itemList[tableRow])
         itemList.remove(at: tableRow)
