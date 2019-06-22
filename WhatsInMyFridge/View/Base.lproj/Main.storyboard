@@ -178,10 +178,10 @@
             </objects>
             <point key="canvasLocation" x="1648.8" y="1253.5232383808097"/>
         </scene>
-        <!--Your Fridge-->
+        <!--Your Kitchen-->
         <scene sceneID="xZe-G7-vIm">
             <objects>
-                <viewController title="Your Fridge" id="YY4-rO-Q03" customClass="FridgeViewController" customModule="WhatsInMyFridge" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Your Fridge" id="YY4-rO-Q03" userLabel="Your Kitchen" customClass="KitchenViewController" customModule="WhatsInMyFridge" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ym1-Iw-IFq">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -192,7 +192,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="tBF-su-sqs" userLabel="FridgeTableView">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="tBF-su-sqs" userLabel="KitchenTableView">
                                 <rect key="frame" x="0.0" y="88" width="414" height="725"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <inset key="separatorInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -238,7 +238,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="emptyMsgLabel" destination="UQa-hZ-r3f" id="1vM-Sk-KnZ"/>
-                        <outlet property="fridgeTableView" destination="tBF-su-sqs" id="HEc-zn-FXt"/>
+                        <outlet property="kitchenTableView" destination="tBF-su-sqs" id="22b-yk-sZJ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yx1-7P-Eot" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -263,11 +263,11 @@
             </objects>
             <point key="canvasLocation" x="-327" y="290"/>
         </scene>
-        <!--FridgeNavBar-->
+        <!--KitchenNavBar-->
         <scene sceneID="O9K-zg-7d5">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="7um-vI-YBc" userLabel="FridgeNavBar" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Your Kitchen" image="groceries" landscapeImage="groceries" id="u0F-VT-M7h" userLabel="Fridge"/>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="7um-vI-YBc" userLabel="KitchenNavBar" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Your Kitchen" image="groceries" landscapeImage="groceries" id="u0F-VT-M7h" userLabel="Kitchen"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="evN-WV-AN6">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
