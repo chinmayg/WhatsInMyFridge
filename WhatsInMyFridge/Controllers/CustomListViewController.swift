@@ -29,9 +29,6 @@ class CustomListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        customListTableView.delegate = self
-        customListTableView.dataSource = self
 
         customListTableView.register(UINib(nibName: "GroceryListsCellTableViewCell", bundle: nil), forCellReuseIdentifier: "customListCell")
         
@@ -50,6 +47,12 @@ class CustomListViewController: UIViewController {
     @IBAction func addItem(_ sender: Any) {
         itemManager.addItemAction(controller: self)
     }
+    
+    @IBAction func editItem(_ sender: UIBarButtonItem) {
+        customListTableView.isEditing = !customListTableView.isEditing
+        customListTableView.reloadData()
+        sender.title = self.customListTableView.isEditing ? "Done" : "Edit"
+    }
 }
 
 //MARK: - TableView Delegate Methods
@@ -60,7 +63,7 @@ extension CustomListViewController:  UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return itemManager.itemList.count
+        return itemManager.itemList.count + 1
     }
 }
 
@@ -71,15 +74,28 @@ extension CustomListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = customListTableView.dequeueReusableCell(withIdentifier: "customListCell") as! GroceryListsCellTableViewCell
-        let item = itemManager.itemList[indexPath.row]
-        
-        cell.listName.text = itemManager.getRowOutputString(item: item)
+
+        print(itemManager.itemList.count, indexPath.row)
+        if indexPath.row < itemManager.itemList.count {
+            let item = itemManager.itemList[indexPath.row]
+            cell.listName.text = itemManager.getRowOutputString(item: item)
+        } else {
+            if customListTableView.isEditing {
+                cell.listName.isUserInteractionEnabled = true
+            } else {
+                cell.listName.isUserInteractionEnabled = false
+            }
+            cell.listName.text = ""
+            cell.selectionStyle = .none
+        }
 
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        itemManager.showEditDialog(controller: self, for: indexPath.row)
+        if indexPath.row < itemManager.itemList.count {
+            itemManager.showEditDialog(controller: self, for: indexPath.row)
+        }
         tableView.deselectRow(at: indexPath, animated: true)
     }
 
@@ -107,20 +123,61 @@ extension CustomListViewController: UITableViewDataSource {
         let configuration = UISwipeActionsConfiguration(actions: [deleteAction, editAction, moveAction])
         return configuration
     }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .insert {
+            print("inserting")
+            let cell = customListTableView.cellForRow(at: indexPath) as! GroceryListsCellTableViewCell
+            itemManager.addNewItem(with: cell.listName.text ?? "", quantity: "-1", displayOrder: itemManager.itemList.count)
+            customListTableView.reloadData()
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+        return false
+    }
+    
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        if indexPath.row < itemManager.itemList.count {
+            return .delete
+        } else {
+            return .insert
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let tempItem = itemManager.itemList[sourceIndexPath.row]
+        itemManager.itemList.remove(at: sourceIndexPath.row)
+        itemManager.itemList.insert(tempItem, at: destinationIndexPath.row)
+        
+        itemManager.updateDisplayOrder()
+        itemManager.save()
+    }
+    
+    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        if indexPath.row < itemManager.itemList.count {
+            return true
+        } else {
+            return false
+        }
+    }
 }
 
 //MARK: - Search Bar Methods
 
 extension CustomListViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        itemManager.load(predicate: NSPredicate(format: "name CONTAINS[cd] %@ ", searchBar.text!))
+        if searchBar.text?.count == 0 {
+            self.itemManager.load()
+        } else {
+            itemManager.load(predicate: NSPredicate(format: "name CONTAINS[cd] %@ ", searchBar.text!))
+        }
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchBar.text?.count == 0 {
-            itemManager.getOrginalListAlphabetical()
-
             DispatchQueue.main.async {
+                self.itemManager.load()
                 searchBar.resignFirstResponder()
             }
         }

@@ -64,6 +64,11 @@
                         <viewLayoutGuide key="safeArea" id="dI2-ko-M0V"/>
                     </view>
                     <navigationItem key="navigationItem" title="Grocery List" id="ggC-S5-uO8">
+                        <barButtonItem key="leftBarButtonItem" title="Edit" id="zKv-TH-dfB" userLabel="Edit">
+                            <connections>
+                                <action selector="editButton:" destination="nvX-2R-i16" id="CFa-Gw-tk6"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="ZJB-Cv-CwY">
                             <connections>
                                 <action selector="addItemButton:" destination="nvX-2R-i16" id="8yF-we-757"/>
@@ -109,6 +114,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="VDF-vo-795" id="fBF-ZZ-Uci"/>
+                                    <outlet property="delegate" destination="VDF-vo-795" id="qlM-FO-VSf"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -121,11 +130,18 @@
                         <viewLayoutGuide key="safeArea" id="dQL-eK-yC2"/>
                     </view>
                     <navigationItem key="navigationItem" title="Title" id="Wbs-3I-4a4">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="XnZ-Nk-ndf">
-                            <connections>
-                                <action selector="addItem:" destination="VDF-vo-795" id="Eyy-LL-O7Y"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="add" id="XnZ-Nk-ndf">
+                                <connections>
+                                    <action selector="addItem:" destination="VDF-vo-795" id="Eyy-LL-O7Y"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Edit" id="hSm-tc-5Ir">
+                                <connections>
+                                    <action selector="editItem:" destination="VDF-vo-795" id="uTA-xI-oE9"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="customListTableView" destination="e9w-9v-GCx" id="fOw-MV-MwB"/>
@@ -181,17 +197,11 @@
         <!--Your Kitchen-->
         <scene sceneID="xZe-G7-vIm">
             <objects>
-                <viewController title="Your Fridge" id="YY4-rO-Q03" userLabel="Your Kitchen" customClass="KitchenViewController" customModule="WhatsInMyFridge" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Your Kitchen" id="YY4-rO-Q03" userLabel="Your Kitchen" customClass="KitchenViewController" customModule="WhatsInMyFridge" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ym1-Iw-IFq">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your Fridge is Empty!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UQa-hZ-r3f">
-                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="27"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="tBF-su-sqs" userLabel="KitchenTableView">
                                 <rect key="frame" x="0.0" y="88" width="414" height="725"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -214,22 +224,27 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="YY4-rO-Q03" id="pkt-9R-izX"/>
+                                    <outlet property="delegate" destination="YY4-rO-Q03" id="05S-pK-TWQ"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="tBF-su-sqs" firstAttribute="trailing" secondItem="hqc-9c-5v0" secondAttribute="trailing" id="Gtj-Kq-Axt"/>
-                            <constraint firstItem="UQa-hZ-r3f" firstAttribute="top" secondItem="hqc-9c-5v0" secondAttribute="top" id="HoO-ji-grC"/>
-                            <constraint firstItem="UQa-hZ-r3f" firstAttribute="leading" secondItem="hqc-9c-5v0" secondAttribute="leading" id="QkH-jx-x6D"/>
                             <constraint firstItem="tBF-su-sqs" firstAttribute="bottom" secondItem="hqc-9c-5v0" secondAttribute="bottom" id="cRT-B9-42t"/>
-                            <constraint firstAttribute="trailing" secondItem="UQa-hZ-r3f" secondAttribute="trailing" id="eO5-q4-59r"/>
                             <constraint firstItem="tBF-su-sqs" firstAttribute="top" secondItem="hqc-9c-5v0" secondAttribute="top" id="gm9-wD-tcw"/>
-                            <constraint firstItem="hqc-9c-5v0" firstAttribute="bottom" secondItem="UQa-hZ-r3f" secondAttribute="bottom" id="ix4-3w-bnF"/>
                             <constraint firstItem="tBF-su-sqs" firstAttribute="leading" secondItem="hqc-9c-5v0" secondAttribute="leading" id="teu-bk-Wxm"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="hqc-9c-5v0"/>
                     </view>
                     <navigationItem key="navigationItem" title="Your Kitchen" id="Vj5-KQ-1AY">
+                        <barButtonItem key="leftBarButtonItem" title="Edit" id="mFQ-r2-w36">
+                            <connections>
+                                <action selector="editItemButton:" destination="YY4-rO-Q03" id="76E-7j-6ug"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="0Ny-CN-YRv">
                             <connections>
                                 <action selector="addItemButton:" destination="YY4-rO-Q03" id="MfK-cu-uti"/>
@@ -237,7 +252,6 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="emptyMsgLabel" destination="UQa-hZ-r3f" id="1vM-Sk-KnZ"/>
                         <outlet property="kitchenTableView" destination="tBF-su-sqs" id="22b-yk-sZJ"/>
                     </connections>
                 </viewController>

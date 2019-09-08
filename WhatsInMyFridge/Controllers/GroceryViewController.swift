@@ -60,6 +60,11 @@ class GroceryViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
+    @IBAction func editButton(_ sender: UIBarButtonItem) {
+        groceryTableView.isEditing = !groceryTableView.isEditing
+        sender.title = self.groceryTableView.isEditing ? "Done" : "Edit"
+    }
+    
     private func addNewList(with name: String)
     {
         let newList = List(context: managedContext)
@@ -143,6 +148,13 @@ class GroceryViewController: UIViewController {
         
         self.present(alert, animated: true, completion: nil)
     }
+    
+    func updateDisplayOrder() {
+        for i in 0..<listOfList.count {
+            let list = listOfList[i]
+            list.setValue( i, forKey: "displayOrder" )
+        }
+    }
 }
 
 //MARK: - TableView Delegate Methods
@@ -204,20 +216,40 @@ extension GroceryViewController: UITableViewDataSource {
         let configuration = UISwipeActionsConfiguration(actions: [deleteAction, editAction])
         return configuration
     }
+    
+    func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+        return false
+    }
+    
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .delete
+    }
+    
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let tempList = listOfList[sourceIndexPath.row]
+        listOfList.remove(at: sourceIndexPath.row)
+        listOfList.insert(tempList, at: destinationIndexPath.row)
+        
+        updateDisplayOrder()
+        save()
+    }
 }
 
 //MARK: - Search Bar Methods
 
 extension GroceryViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        load(predicate: NSPredicate(format: "name CONTAINS[cd] %@ ", searchBar.text!))
+        if searchBar.text?.count == 0 {
+            self.load()
+        } else {
+            load(predicate: NSPredicate(format: "name CONTAINS[cd] %@ ", searchBar.text!))
+        }
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchBar.text?.count == 0 {
-            getOrginalListAlphabetical()
-            
             DispatchQueue.main.async {
+                self.load()
                 searchBar.resignFirstResponder()
             }
         }

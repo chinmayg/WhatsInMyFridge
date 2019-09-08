@@ -58,7 +58,8 @@ class ItemCoreDataManager {
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (_) in
             if let name = alert.textFields?[0].text, let quantity = alert.textFields?[1].text
             {
-                self.addNewItem(with: name, quantity: quantity)
+                self.addNewItem(with: name, quantity: quantity, displayOrder : self.itemList.count)
+                self.updateDisplayOrder()
                 self.currentTableView.reloadData()
             }
         }))
@@ -70,7 +71,7 @@ class ItemCoreDataManager {
         controller.present(alert, animated: true, completion: nil)
     }
     
-    func addNewItem(with name: String, quantity: String)
+    func addNewItem(with name: String, quantity: String, displayOrder : Int)
     {
         let setQuantity = checkIfCorrectQuantity(testQuantity: quantity)
         
@@ -81,6 +82,7 @@ class ItemCoreDataManager {
         
         item.setValue(name, forKeyPath: "name")
         item.setValue(setQuantity, forKeyPath: "quantity")
+        item.setValue(displayOrder, forKey: "displayOrder")
         item.parentList = selectedList
         itemList.append(item)
         
@@ -107,6 +109,13 @@ class ItemCoreDataManager {
             return "\(item.name ?? "")"
         } else {
             return "\(item.quantity) \(item.name ?? "")"
+        }
+    }
+    
+    func updateDisplayOrder() {
+        for i in 0..<itemList.count {
+            let item = itemList[i]
+            item.setValue( i, forKey: "displayOrder" )
         }
     }
     
@@ -151,7 +160,7 @@ class ItemCoreDataManager {
     func load(with request : NSFetchRequest<Item> = Item.fetchRequest(), predicate: NSPredicate? = nil) {
         
         let parentListPredicate = NSPredicate(format: "parentList.name MATCHES %@", selectedList!.name!)
-        request.sortDescriptors  = [NSSortDescriptor(key: "name", ascending: true )]
+        request.sortDescriptors  = [NSSortDescriptor(key: "displayOrder", ascending: true )]
         
         if let additionalPredicate = predicate {
             request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [parentListPredicate, additionalPredicate])
@@ -172,7 +181,7 @@ class ItemCoreDataManager {
     func loadLists(with request : NSFetchRequest<List> = List.fetchRequest(), predicate: NSPredicate? = nil) {
         let parentListPredicate = NSPredicate(format: "NOT name MATCHES %@", selectedList!.name!)
         
-        request.sortDescriptors  = [NSSortDescriptor(key: "name", ascending: true )]
+        request.sortDescriptors  = [NSSortDescriptor(key: "displayOrder", ascending: true )]
         
         if let additionalPredicate = predicate {
             request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [parentListPredicate, additionalPredicate])

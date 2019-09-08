@@ -10,10 +10,11 @@ import UIKit
 
 class GroceryListsCellTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var listName: UILabel!
+    @IBOutlet weak var listName: UITextField!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        listName.isUserInteractionEnabled = false
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
