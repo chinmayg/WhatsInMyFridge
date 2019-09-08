@@ -18,6 +18,7 @@
 		74692B56226563AA0089D023 /* GroceryListsCellTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74692B54226563AA0089D023 /* GroceryListsCellTableViewCell.swift */; };
 		74692B57226563AA0089D023 /* GroceryListsCellTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74692B55226563AA0089D023 /* GroceryListsCellTableViewCell.xib */; };
 		74692B5A2266C3710089D023 /* CustomListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74692B592266C3710089D023 /* CustomListViewController.swift */; };
+		74BE0FD223258B790065F3A1 /* Version 1.x screen shots Whats in MyKitchen in Resources */ = {isa = PBXBuildFile; fileRef = 74BE0FD123258B780065F3A1 /* Version 1.x screen shots Whats in MyKitchen */; };
 		74D2E47722BDC9B100AAD0CB /* ItemCoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74D2E47622BDC9B100AAD0CB /* ItemCoreDataManager.swift */; };
 		74E30BA3220AC4F7000B0E1D /* GroceryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74E30BA2220AC4F7000B0E1D /* GroceryViewController.swift */; };
 		74E30BA5220AC504000B0E1D /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74E30BA4220AC504000B0E1D /* SettingsViewController.swift */; };
@@ -41,6 +42,7 @@
 		74692B55226563AA0089D023 /* GroceryListsCellTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GroceryListsCellTableViewCell.xib; sourceTree = "<group>"; };
 		74692B58226566430089D023 /* ListDataModelv3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ListDataModelv3.xcdatamodel; sourceTree = "<group>"; };
 		74692B592266C3710089D023 /* CustomListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomListViewController.swift; sourceTree = "<group>"; };
+		74BE0FD123258B780065F3A1 /* Version 1.x screen shots Whats in MyKitchen */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "Version 1.x screen shots Whats in MyKitchen"; sourceTree = "<group>"; };
 		74D2E47622BDC9B100AAD0CB /* ItemCoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCoreDataManager.swift; sourceTree = "<group>"; };
 		74E30BA2220AC4F7000B0E1D /* GroceryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroceryViewController.swift; sourceTree = "<group>"; };
 		74E30BA4220AC504000B0E1D /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -62,6 +64,7 @@
 		744B4BAC220ABA7F003D67AC = {
 			isa = PBXGroup;
 			children = (
+				74BE0FD123258B780065F3A1 /* Version 1.x screen shots Whats in MyKitchen */,
 				744B4BB7220ABA7F003D67AC /* WhatsInMyFridge */,
 				744B4BB6220ABA7F003D67AC /* Products */,
 			);
@@ -185,6 +188,7 @@
 				74692B57226563AA0089D023 /* GroceryListsCellTableViewCell.xib in Resources */,
 				74E7FB3622278FBC0087EBD5 /* ItemTVCell.xib in Resources */,
 				744B4BC3220ABA80003D67AC /* LaunchScreen.storyboard in Resources */,
+				74BE0FD223258B790065F3A1 /* Version 1.x screen shots Whats in MyKitchen in Resources */,
 				744B4BC0220ABA80003D67AC /* Assets.xcassets in Resources */,
 				744B4BBE220ABA7F003D67AC /* Main.storyboard in Resources */,
 			);
